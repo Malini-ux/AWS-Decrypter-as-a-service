@@ -19,7 +19,7 @@ paths:
                 $ref: '#/components/schemas/inline_response_200'
               examples:
                 "0":
-                  value: '{"statusCode": 200, "body": {"cd0aa9856147b6c5b4ff2b7dfee5da20aa38253099ef1b4a64aced233c9afe29": "g"}}'
+                  value: '{"cd0aa9856147b6c5b4ff2b7dfee5da20aa38253099ef1b4a64aced233c9afe29": "g"}'
       servers:
       - url: https://feu1ng60b4.execute-api.us-east-1.amazonaws.com
     servers:

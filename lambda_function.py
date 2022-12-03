@@ -6,15 +6,13 @@ def lambda_handler(event, context):
         dynamodb = boto3.resource('dynamodb')
         table = dynamodb.Table('lookup')      
         resp = table.query(KeyConditionExpression=Key('key').eq(shahHash))
-        count = resp['Count'] 
-
+        count = resp['Count']
         if count == 0: 
           statusCode=404
-          password="null"
-          return {'statusCode': statusCode,'body': password}
+          return {'error':"Unable to crack password"}
         else:
           password = resp['Items'][0]
           hash =password['key']
           password = password['value']
           statusCode=200
-          return {'statusCode': statusCode,'body': {hash : password}}
+          return {hash : password}
