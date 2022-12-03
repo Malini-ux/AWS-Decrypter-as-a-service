@@ -2,17 +2,14 @@ import boto3
 import json
 from boto3.dynamodb.conditions import Key,Attr
 def lambda_handler(event, context):
-        shahHash = event['params']['path']['shaHash']
+        #shahHash = event['params']['path']['shaHash']
         dynamodb = boto3.resource('dynamodb')
         table = dynamodb.Table('lookup')      
-        resp = table.query(KeyConditionExpression=Key('key').eq(shahHash))
-        count = resp['Count']
-        if count == 0: 
-          statusCode=404
-          return {'error':"Unable to crack password"}
+        path = event['path']
+        extract = path.split('/')
+        shahHash = extract[len(extract)-1]
+        resp = table.get_item(Key={'key' : shahHash})
+        if 'Item' in resp:
+            return{'statusCode':200,'body':json.dumps({shahHash: resp['Item']['value']})}
         else:
-          password = resp['Items'][0]
-          hash =password['key']
-          password = password['value']
-          statusCode=200
-          return {hash : password}
+            return{'statusCode':404,'body':"password is uncrackable"}
